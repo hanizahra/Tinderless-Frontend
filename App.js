@@ -11,16 +11,19 @@ import {
   Text,
   View
 } from 'react-native';
-import UserPosition from './src/UserPosition'
+import UserPosition from './src/UserPosition/UserPosition'
+import UserLocationId from './src/UserLocationId/UserLocationId'
 
 type Props = {};
 export default class App extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
+
         <Text style={styles.welcome}>
-           <UserPosition />
+           <UserLocationId />
         </Text>
+
       </View>
     );
   }
@@ -31,16 +34,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fab1a0',
   },
   welcome: {
-    fontSize: 20,
+    fontSize: 25,
     textAlign: 'center',
     margin: 10,
   },
   instructions: {
     textAlign: 'center',
-    color: '#333333',
+    color: '#0984e3',
     marginBottom: 5,
   },
 });

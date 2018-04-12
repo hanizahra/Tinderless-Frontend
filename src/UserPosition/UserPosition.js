@@ -12,6 +12,7 @@ class UserPosition extends Component {
     };
   }
 
+
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
