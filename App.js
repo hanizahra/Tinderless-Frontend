@@ -19,6 +19,7 @@ import LoginForm from './src/components/user/account/LoginForm'
 import SignupForm from './src/components/user/account/SignupForm'
 
 type Props = {};
+
 export default class Home extends Component<Props> {
   constructor(props){
     super(props)
@@ -116,33 +117,26 @@ export default class Home extends Component<Props> {
   }
 
   render() {
-    // let locationData = 'Loading...';
-    // if(this.state.hasInfo) {
-    //   locationData = (
-    //     <Text>
-    //      {this.latitude}
-    //       {this.longitude}
-    //       {this.placeId}
-    //       {this.streetAddress}
-    //       {this.name}
-    //       {this.open}
-    //       {this.id}
-    //     </Text>
-    //   );
-    // }
+    let locationData = 'Loading...';
+    if(this.state.hasInfo) {
+      locationData = (
+        <Text>
+         {this.latitude}
+          {this.longitude}
+          {this.placeId}
+          {this.streetAddress}
+          {this.name}
+          {this.open}
+          {this.id}
+        </Text>
+      );
+    }
 
     return (
       <View style={styles.wrapper}>
         <Text>
 
-          <NavigatorIOS
-            initialRoute={{
-              component: SignupForm,
-              title: 'My Initial Scene',
-              passProps: {myProp: 'foo'},
-            }}
-            style={styles.container}
-          />
+          {locationData}
 
         </Text>
 

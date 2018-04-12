@@ -11,7 +11,7 @@ export default class LogoutForm extends React.Component {
 
   _onForward() {
    const { navigate } = this.props.navigation
-   navigate('')
+   navigate('RegisterScreen')
   }
 
   render() {

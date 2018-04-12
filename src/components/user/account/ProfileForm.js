@@ -11,7 +11,7 @@ export default class ProfileForm extends React.Component {
 
   _onForward() {
    const { navigate } = this.props.navigation
-   navigate('LogInScreen')
+   navigate('LogOutScreen')
   }
 
   render() {

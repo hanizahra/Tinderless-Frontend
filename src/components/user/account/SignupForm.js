@@ -1,6 +1,7 @@
 import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import {Button, NavigatorIOS, Text, View, StyleSheet} from 'react-native';
+import Home from '../../../../App'
 
 export default class SignupForm extends React.Component {
 
@@ -11,7 +12,7 @@ export default class SignupForm extends React.Component {
 
   _onForward() {
    const { navigate } = this.props.navigation
-   navigate('LogInScreen')
+   navigate('RegisterScreen')
   }
 
   render() {
