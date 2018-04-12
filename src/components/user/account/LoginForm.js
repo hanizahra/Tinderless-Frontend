@@ -1,26 +1,59 @@
-import React, { Component} from 'react';
-import PropTypes from 'prop-types';
-import {Button, NavigatorIOS, Text, View, StyleSheet} from 'react-native';
+import React, { Component } from 'react';
+import { View, StyleSheet, Button, TouchableHighlight, Text } from 'react-native';
+import Home from '../../../../App';
 
-export default class LoginForm extends React.Component {
+import t from 'tcomb-form-native'; // 0.6.9
 
-  constructor(props, context) {
-    super(props, context);
-    this._onForward = this._onForward.bind(this);
+const Form = t.form.Form;
+
+const User = t.struct({
+  username: t.String,
+  password: t.String
+});
+
+const options = {
+    fields: {
+    username: {
+      error: 'Required'
+    },
+    password: {
+      error: 'Required'
+    }
+  },
+};
+
+export default class LoginForm extends Component {
+
+
+  handleSubmit = () => {
+    const value = this._form.getValue(); // use that ref to get the form value
+    console.log('value: ', value);
+    const { navigate } = this.props.navigation
+    navigate('SwipeScreen')
   }
 
-  _onForward() {
-   const { navigate } = this.props.navigation
-   navigate('ProfileScreen')
+  signupPage = () => {
+    const value = this._form.getValue(); // use that ref to get the form value
+    console.log('value: ', value);
+    const { navigate } = this.props.navigation
+    navigate('RegisterScreen')
   }
 
   render() {
     return (
-      <View style={styles.wrapper}>
-        <Text style={styles.welcome}>Login Form: {this.props.title}</Text>
+      <View style={styles.container}>
+        <Form
+          ref={c => this._form = c}
+          type={User}
+          options={options}
+        />
+
+        <TouchableHighlight style={styles.button} onPress={this.handleSubmit} underlayColor='#99d9f4'>
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableHighlight>
         <Button
-          onPress={this._onForward}
-          title="Tap me to load the next scene"
+          title="Sign Up!"
+          onPress={this.signupPage}
         />
       </View>
     );
@@ -29,16 +62,24 @@ export default class LoginForm extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  wrapper: {
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'grey',
+    marginTop: 50,
+    padding: 20,
+    backgroundColor: '#ffffff',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  buttonText: {
+    fontSize: 18,
+    color: 'white',
+    alignSelf: 'center'
+  },
+  button: {
+    height: 36,
+    backgroundColor: '#48BBEC',
+    borderColor: '#48BBEC',
+    borderWidth: 1,
+    borderRadius: 8,
+    marginBottom: 10,
+    alignSelf: 'stretch',
+    justifyContent: 'center'
   }
 });

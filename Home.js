@@ -1,10 +1,13 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
-import SignupForm from './src/components/user/account/SignupForm'
-import LoginForm from './src/components/user/account/LoginForm'
-import ProfileForm from './src/components/user/account/ProfileForm'
-import LogoutForm from './src/components/user/account/LogoutForm'
-import RegisterForm from './src/components/user/account/RegisterForm'
+import SignupForm from './src/components/user/account/SignupForm';
+import LoginForm from './src/components/user/account/LoginForm';
+import ProfileForm from './src/components/user/account/ProfileForm';
+import LogoutForm from './src/components/user/account/LogoutForm';
+import RegisterForm from './src/components/user/account/RegisterForm';
+import SwipeMatch from './src/components/matching/SwipeMatch';
+import Matches from './src/components/matching/Matches';
+import AccountSettings from './src/components/user/account/AccountSettings';
 import App from './App'
 
 import {
@@ -17,8 +20,13 @@ import {
 } from 'react-native';
 
 const Home = StackNavigator ({
-  SignUpScreen : {screen: SignupForm},
+  SwipeScreen: {screen: SwipeMatch},
   LogInScreen : {screen: LoginForm},
+  // SwipeScreen: {screen: SwipeMatch},
+  MatchedScreen: {screen: Matches},
+  AccountScreen: {screen: AccountSettings},
+  SignUpScreen : {screen: SignupForm},
+  // LogInScreen : {screen: LoginForm},
   ProfileScreen: {screen: ProfileForm},
   LogOutScreen : {screen: LogoutForm},
   RegisterScreen : {screen: RegisterForm}
