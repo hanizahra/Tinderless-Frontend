@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
-import App from './App';
+import Home from './Home';
 
-AppRegistry.registerComponent('DatingApp', () => App);
+AppRegistry.registerComponent('DatingApp', () => Home);
