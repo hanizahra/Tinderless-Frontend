@@ -20,6 +20,7 @@ import {
 } from 'react-native';
 
 const Home = StackNavigator ({
+  RegisterScreen : {screen: RegisterForm},
   SwipeScreen: {screen: SwipeMatch},
   LogInScreen : {screen: LoginForm},
   // SwipeScreen: {screen: SwipeMatch},
@@ -29,7 +30,6 @@ const Home = StackNavigator ({
   // LogInScreen : {screen: LoginForm},
   ProfileScreen: {screen: ProfileForm},
   LogOutScreen : {screen: LogoutForm},
-  RegisterScreen : {screen: RegisterForm}
 })
 
 export default Home

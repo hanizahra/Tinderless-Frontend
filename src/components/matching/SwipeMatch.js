@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Button, TouchableHighlight, Text } from 'react-native';
+import { View, StyleSheet, Button, TouchableHighlight, Text, Navigator, TouchableOpacity } from 'react-native';
 
 import t from 'tcomb-form-native'; // 0.6.9
 
@@ -21,21 +21,47 @@ const options = {
   },
 };
 
-export default class SwipeMatch extends Component {
 
+export default class SwipeMatch extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+
+    }
+    this.renderMatchScreen = this.renderMatchScreen.bind(this)
+    this.renderSettingsScreen = this.renderSettingsScreen.bind(this)
+    this.props.navigation.setParams({
+      handleRender: this.renderMatchScreen,
+      handleRender2: this.renderSettingsScreen
+    })
+  }
+
+  static navigationOptions = ({ navigation }) => ({
+    headerRight: <Button onPress={() => navigation.state.params.handleRender()} title='Matches'/>,
+    headerLeft: <Button onPress={() => navigation.state.params.handleRender2()} title='Account' />
+  })
+
+  componentDidMount(){
+    console.log('this is props',this.props)
+  }
+
+  renderMatchScreen(){
+    console.log('i hit matches')
+    const {navigate} = this.props.navigation
+    navigate("MatchedScreen")
+  }
+
+  renderSettingsScreen(){
+    console.log('i hit matches')
+    const {navigate} = this.props.navigation
+    navigate("AccountScreen")
+  }
 
   handleSubmit = () => {
     const value = this._form.getValue(); // use that ref to get the form value
     console.log('value: ', value);
     const { navigate } = this.props.navigation
     navigate('SwipeScreen')
-  }
-
-  signupPage = () => {
-    const value = this._form.getValue(); // use that ref to get the form value
-    console.log('value: ', value);
-    const { navigate } = this.props.navigation
-    navigate('RegisterScreen')
   }
 
   render() {
