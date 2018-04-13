@@ -13,6 +13,7 @@ Navigator
 } from 'react-native';
 import t from 'tcomb-form-native'; // 0.6.9
 import SwipeCards from 'react-native-swipe-cards';
+import Modal from 'react-native-modal';
 
 class Card extends React.Component {
   constructor(props) {
@@ -133,6 +134,13 @@ export default class SwipeMatch extends React.Component {
     // If you want a stack of cards instead of one-per-one view, activate stack mode
     // stack={true}
     return (
+      <View style={{
+                  flex: 1,
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'blue'
+                }}>
       <SwipeCards
         cards={this.state.cards}
         loop={false}
@@ -146,6 +154,30 @@ export default class SwipeMatch extends React.Component {
         handleNope={this.handleNope}
         cardRemoved={this.cardRemoved.bind(this)}
       />
+
+
+
+      </View>
+      // <View>
+      //   <Modal transparent={true}
+      //  visible={this.state.isVisible}
+      //  onRequestClose={this.closeModal}>
+      //     <View style={{
+      //             flex: 1,
+      //             flexDirection: 'column',
+      //             justifyContent: 'center',
+      //             alignItems: 'center',
+      //             backgroundColor: 'yellow'
+      //           }}>
+      //             <Text style={styles.modalBackground}>You Matched!</Text>
+      //       <View style={{
+      //               width: 300,
+      //               height: 300}}>
+      //         ...
+      //       </View>
+      //     </View>
+      //   </Modal>
+      // </View>
     )
   }
 }
@@ -159,6 +191,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderWidth: 1,
     elevation: 1,
+  },
+  modalBackground: {
+    backgroundColor: 'red'
   },
   noMoreCardsText: {
     flex: 1,
