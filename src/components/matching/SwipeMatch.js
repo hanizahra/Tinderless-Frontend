@@ -1,33 +1,60 @@
+'use strict';
+
 import React, { Component } from 'react';
-import { View, StyleSheet, Button, TouchableHighlight, Text, Navigator, TouchableOpacity } from 'react-native';
-
+import {
+StyleSheet,
+Text,
+View,
+Image,
+Button,
+TouchableHighlight,
+TouchableOpacity,
+Navigator
+} from 'react-native';
 import t from 'tcomb-form-native'; // 0.6.9
+import SwipeCards from 'react-native-swipe-cards';
 
-const Form = t.form.Form;
-
-const User = t.struct({
-  username: t.String,
-  password: t.String
-});
-
-const options = {
-    fields: {
-    username: {
-      error: 'Required'
-    },
-    password: {
-      error: 'Required'
-    }
-  },
-};
-
-
-export default class SwipeMatch extends Component {
+class Card extends React.Component {
   constructor(props) {
-    super(props)
-    this.state = {
+    super(props);
+  }
 
-    }
+  render() {
+    return (
+      <View style={[styles.card, {backgroundColor: this.props.backgroundColor}]}>
+        <Text>{this.props.text}</Text>
+      </View>
+    )
+  }
+}
+
+class NoMoreCards extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <View>
+        <Text style={styles.noMoreCardsText}>No more cards</Text>
+      </View>
+    )
+  }
+}
+
+export default class SwipeMatch extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cards: [
+        {text: 'Tomato', backgroundColor: 'red'},
+        {text: 'Aubergine', backgroundColor: 'purple'},
+        {text: 'Courgette', backgroundColor: 'green'},
+        {text: 'Blueberry', backgroundColor: 'blue'},
+        {text: 'Umm...', backgroundColor: 'cyan'},
+        {text: 'orange', backgroundColor: 'orange'},
+      ]
+    };
     this.renderMatchScreen = this.renderMatchScreen.bind(this)
     this.renderSettingsScreen = this.renderSettingsScreen.bind(this)
     this.props.navigation.setParams({
@@ -40,10 +67,6 @@ export default class SwipeMatch extends Component {
     headerRight: <Button onPress={() => navigation.state.params.handleRender()} title='Matches'/>,
     headerLeft: <Button onPress={() => navigation.state.params.handleRender2()} title='Account' />
   })
-
-  componentDidMount(){
-    console.log('this is props',this.props)
-  }
 
   renderMatchScreen(){
     console.log('i hit matches')
@@ -64,37 +87,41 @@ export default class SwipeMatch extends Component {
     navigate('SwipeScreen')
   }
 
+  handleYup (card) {
+    console.log(`Yup for ${card.text}`)
+  }
+  handleNope (card) {
+    console.log(`Nope for ${card.text}`)
+  }
+  handleMaybe (card) {
+    console.log(`Maybe for ${card.text}`)
+  }
   render() {
+    // If you want a stack of cards instead of one-per-one view, activate stack mode
+    // stack={true}
     return (
-      <View style={styles.container}>
-        <Text>
-          Swiping coming soon
-        </Text>
-      </View>
-    );
+      <SwipeCards
+        cards={this.state.cards}
+        renderCard={(cardData) => <Card {...cardData} />}
+        renderNoMoreCards={() => <NoMoreCards />}
+
+        handleYup={this.handleYup}
+        handleNope={this.handleNope}
+        handleMaybe={this.handleMaybe}
+        hasMaybeAction
+      />
+    )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  card: {
     justifyContent: 'center',
-    marginTop: 50,
-    padding: 20,
-    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    width: 300,
+    height: 300,
   },
-  buttonText: {
-    fontSize: 18,
-    color: 'white',
-    alignSelf: 'center'
-  },
-  button: {
-    height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: 'stretch',
-    justifyContent: 'center'
+  noMoreCardsText: {
+    fontSize: 22,
   }
-});
+})
