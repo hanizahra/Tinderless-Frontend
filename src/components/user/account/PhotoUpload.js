@@ -23,10 +23,6 @@ export default class PhotoUpload extends React.Component {
     console.log('loaded', this.state, ImagePicker.showImagePicker)
   }
 
-  // state = {
-  //   avatarSource: null,
-  // };
-
   selectPhotoTapped() {
     ImagePicker.openPicker({
       width: 300,

@@ -21,8 +21,8 @@ import {
 } from 'react-native';
 
 const Home = StackNavigator ({
-  PhotoUploadScreen: {screen: PhotoUpload},
   SwipeScreen: {screen: SwipeMatch},
+  PhotoUploadScreen: {screen: PhotoUpload},
   RegisterScreen : {screen: RegisterForm},
   // SwipeScreen: {screen: SwipeMatch},
   LogInScreen : {screen: LoginForm},
