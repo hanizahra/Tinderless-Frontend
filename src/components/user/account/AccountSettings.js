@@ -5,21 +5,42 @@ import t from 'tcomb-form-native'; // 0.6.9
 
 const Form = t.form.Form;
 
-const User = t.struct({
-  username: t.String,
-  password: t.String
+const GenderSeeking = t.enums({
+  M: 'Male',
+  F: 'Female',
+  T: 'Trans',
+  E: 'Everyone!'
 });
 
-const options = {
-    fields: {
-    username: {
-      error: 'Required'
-    },
-    password: {
-      error: 'Required'
-    }
-  },
-};
+const AgeSeeking = t.enums({
+  1: "Age is just a number!",
+  2: '18-29',
+  3: '30-39',
+  4: '40-49',
+  5: "50+"
+});
+
+const Person = t.struct({
+  "I'm seeking": GenderSeeking,
+  "Between": AgeSeeking
+});
+
+// const options = {
+//     fields: {
+//     "I identify as": {
+//       error: 'Required'
+//     },
+//     age: {
+//       error: 'Required'
+//     },
+//     "I'm seeking": {
+//       error: 'Required'
+//     },
+//     "Between": {
+//       error: 'Required'
+//     }
+//   },
+// };
 
 export default class AccountSettings extends Component {
 
@@ -51,9 +72,21 @@ export default class AccountSettings extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>
-          This will be account settings
-        </Text>
+        <Form
+          ref={c => this._form = c}
+          type={Person}
+          // options={options}
+        />
+
+        <TouchableHighlight style={styles.button} onPress={this.handleSubmit} underlayColor='#99d9f4'>
+          <Text style={styles.buttonText}>Save</Text>
+        </TouchableHighlight>
+        <TouchableHighlight style={styles.button} onPress={this.handleSubmit} underlayColor='#99d9f4'>
+          <Text style={styles.buttonText}>Logout</Text>
+        </TouchableHighlight>
+        <TouchableHighlight style={styles.DeleteButton} onPress={this.handleSubmit} underlayColor='#99d9f4'>
+          <Text style={styles.buttonText}>Delete Account</Text>
+        </TouchableHighlight>
       </View>
     );
   }
@@ -74,6 +107,16 @@ const styles = StyleSheet.create({
   button: {
     height: 36,
     backgroundColor: '#48BBEC',
+    borderColor: '#48BBEC',
+    borderWidth: 1,
+    borderRadius: 8,
+    marginBottom: 10,
+    alignSelf: 'stretch',
+    justifyContent: 'center'
+  },
+  DeleteButton: {
+    height: 36,
+    backgroundColor: 'red',
     borderColor: '#48BBEC',
     borderWidth: 1,
     borderRadius: 8,

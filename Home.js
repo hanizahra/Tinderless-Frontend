@@ -3,7 +3,6 @@ import { StackNavigator } from 'react-navigation';
 import SignupForm from './src/components/user/account/SignupForm';
 import LoginForm from './src/components/user/account/LoginForm';
 import ProfileForm from './src/components/user/account/ProfileForm';
-import LogoutForm from './src/components/user/account/LogoutForm';
 import RegisterForm from './src/components/user/account/RegisterForm';
 import SwipeMatch from './src/components/matching/SwipeMatch';
 import Matches from './src/components/matching/Matches';
@@ -22,6 +21,7 @@ import {
 } from 'react-native';
 
 const Home = StackNavigator ({
+  AccountScreen: {screen: AccountSettings},
   SwipeScreen: {screen: SwipeMatch},
   ModalScreen: {screen: ModalMatch},
   PhotoUploadScreen: {screen: PhotoUpload},
@@ -30,11 +30,10 @@ const Home = StackNavigator ({
   LogInScreen : {screen: LoginForm},
   // SwipeScreen: {screen: SwipeMatch},
   MatchedScreen: {screen: Matches},
-  AccountScreen: {screen: AccountSettings},
+  // AccountScreen: {screen: AccountSettings},
   SignUpScreen : {screen: SignupForm},
   // LogInScreen : {screen: LoginForm},
   ProfileScreen: {screen: ProfileForm},
-  LogOutScreen : {screen: LogoutForm},
 })
 
 export default Home
