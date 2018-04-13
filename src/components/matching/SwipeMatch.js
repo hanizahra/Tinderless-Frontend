@@ -14,6 +14,7 @@ Navigator
 import t from 'tcomb-form-native'; // 0.6.9
 import SwipeCards from 'react-native-swipe-cards';
 import Modal from 'react-native-modal';
+import ModalMatch from './ModalMatch';
 
 class Card extends React.Component {
   constructor(props) {
@@ -158,26 +159,7 @@ export default class SwipeMatch extends React.Component {
 
 
       </View>
-      // <View>
-      //   <Modal transparent={true}
-      //  visible={this.state.isVisible}
-      //  onRequestClose={this.closeModal}>
-      //     <View style={{
-      //             flex: 1,
-      //             flexDirection: 'column',
-      //             justifyContent: 'center',
-      //             alignItems: 'center',
-      //             backgroundColor: 'yellow'
-      //           }}>
-      //             <Text style={styles.modalBackground}>You Matched!</Text>
-      //       <View style={{
-      //               width: 300,
-      //               height: 300}}>
-      //         ...
-      //       </View>
-      //     </View>
-      //   </Modal>
-      // </View>
+
     )
   }
 }

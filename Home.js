@@ -9,6 +9,7 @@ import SwipeMatch from './src/components/matching/SwipeMatch';
 import Matches from './src/components/matching/Matches';
 import AccountSettings from './src/components/user/account/AccountSettings';
 import PhotoUpload from './src/components/user/account/PhotoUpload';
+import ModalMatch from './src/components/matching/ModalMatch';
 import App from './App'
 
 import {
@@ -22,6 +23,7 @@ import {
 
 const Home = StackNavigator ({
   SwipeScreen: {screen: SwipeMatch},
+  ModalScreen: {screen: ModalMatch},
   PhotoUploadScreen: {screen: PhotoUpload},
   RegisterScreen : {screen: RegisterForm},
   // SwipeScreen: {screen: SwipeMatch},
