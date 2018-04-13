@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Button, TouchableHighlight, Text, TouchableOpacity } from 'react-native';
+import PhotoUpdate from './PhotoUpdate';
 
 import t from 'tcomb-form-native'; // 0.6.9
 
@@ -72,12 +73,14 @@ export default class AccountSettings extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <View style={styles.photoUpdate}>
+          <PhotoUpdate />
+        </View>
         <Form
           ref={c => this._form = c}
           type={Person}
           // options={options}
         />
-
         <TouchableHighlight style={styles.button} onPress={this.handleSubmit} underlayColor='#99d9f4'>
           <Text style={styles.buttonText}>Save</Text>
         </TouchableHighlight>
@@ -98,6 +101,9 @@ const styles = StyleSheet.create({
     marginTop: 50,
     padding: 20,
     backgroundColor: '#ffffff',
+  },
+  photoUpdate: {
+    flex: 1
   },
   buttonText: {
     fontSize: 18,

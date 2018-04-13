@@ -8,6 +8,7 @@ import SwipeMatch from './src/components/matching/SwipeMatch';
 import Matches from './src/components/matching/Matches';
 import AccountSettings from './src/components/user/account/AccountSettings';
 import PhotoUpload from './src/components/user/account/PhotoUpload';
+import PhotoUpdate from './src/components/user/account/PhotoUpdate';
 import ModalMatch from './src/components/matching/ModalMatch';
 import App from './App'
 
@@ -21,8 +22,8 @@ import {
 } from 'react-native';
 
 const Home = StackNavigator ({
-  MatchedScreen: {screen: Matches},
   AccountScreen: {screen: AccountSettings},
+  MatchedScreen: {screen: Matches},
   SwipeScreen: {screen: SwipeMatch},
   ModalScreen: {screen: ModalMatch},
   PhotoUploadScreen: {screen: PhotoUpload},
