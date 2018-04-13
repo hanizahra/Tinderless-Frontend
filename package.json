@@ -7,9 +7,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "nodemon": "^1.17.3",
     "react": "^16.3.1",
     "react-native": "^0.55.2",
     "react-native-elements": "^0.19.1",
+    "react-native-fs": "^2.9.12",
+    "react-native-image-picker": "^0.26.7",
+    "react-native-image-resizer": "^1.0.0",
     "react-native-nav": "^2.0.2",
     "react-navigation": "^1.5.11",
     "tcomb-form-native": "^0.6.11"

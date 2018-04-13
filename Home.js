@@ -8,6 +8,7 @@ import RegisterForm from './src/components/user/account/RegisterForm';
 import SwipeMatch from './src/components/matching/SwipeMatch';
 import Matches from './src/components/matching/Matches';
 import AccountSettings from './src/components/user/account/AccountSettings';
+import PhotoUpload from './src/components/user/account/PhotoUpload';
 import App from './App'
 
 import {
@@ -20,8 +21,10 @@ import {
 } from 'react-native';
 
 const Home = StackNavigator ({
-  RegisterScreen : {screen: RegisterForm},
+  PhotoUploadScreen: {screen: PhotoUpload},
   SwipeScreen: {screen: SwipeMatch},
+  RegisterScreen : {screen: RegisterForm},
+  // SwipeScreen: {screen: SwipeMatch},
   LogInScreen : {screen: LoginForm},
   // SwipeScreen: {screen: SwipeMatch},
   MatchedScreen: {screen: Matches},

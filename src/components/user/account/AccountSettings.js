@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Button, TouchableHighlight, Text } from 'react-native';
+import { View, StyleSheet, Button, TouchableHighlight, Text, TouchableOpacity } from 'react-native';
 
 import t from 'tcomb-form-native'; // 0.6.9
 
@@ -30,6 +30,16 @@ export default class AccountSettings extends Component {
     const { navigate } = this.props.navigation
     navigate('SwipeScreen')
   }
+
+  static navigationOptions = {
+      title: 'AccountScreen',
+      headerStyle: {
+        backgroundColor: '#74b9ff'
+      },
+      headerTintColor: '#ff7675',
+      // headerLeft: {
+      // },
+  };
 
   signupPage = () => {
     const value = this._form.getValue(); // use that ref to get the form value
