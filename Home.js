@@ -21,6 +21,7 @@ import {
 } from 'react-native';
 
 const Home = StackNavigator ({
+  MatchedScreen: {screen: Matches},
   AccountScreen: {screen: AccountSettings},
   SwipeScreen: {screen: SwipeMatch},
   ModalScreen: {screen: ModalMatch},
@@ -29,7 +30,7 @@ const Home = StackNavigator ({
   // SwipeScreen: {screen: SwipeMatch},
   LogInScreen : {screen: LoginForm},
   // SwipeScreen: {screen: SwipeMatch},
-  MatchedScreen: {screen: Matches},
+  // MatchedScreen: {screen: Matches},
   // AccountScreen: {screen: AccountSettings},
   SignUpScreen : {screen: SignupForm},
   // LogInScreen : {screen: LoginForm},
