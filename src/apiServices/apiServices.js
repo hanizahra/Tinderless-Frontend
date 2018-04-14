@@ -5,7 +5,7 @@ const apiServices = {};
 apiServices.addUser = (user) => {
   axios({
     method: 'POST',
-    url: '/api/DatingApp',
+    url: 'http://localhost:3000/api/DatingApp',
     data: {
       username: user.username,
       email: user.email,
