@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Button, TouchableHighlight, Text } from 'react-native';
+import apiServices from '../../../apiServices/apiServices';
 import Home from '../../../../App';
-
 import t from 'tcomb-form-native'; // 0.6.9
 
 const Form = t.form.Form;
@@ -32,10 +32,17 @@ export default class RegisterForm extends Component {
 
   handleSubmit = () => {
     const value = this._form.getValue(); // use that ref to get the form value
-    console.log('value: ', value);
+    // console.log('value: ', value);
     const { navigate } = this.props.navigation
-   navigate('ProfileScreen')
+    navigate('ProfileScreen')
+    apiServices.addUser(value)
+    console.log('user info sent to apiServices ===>', value)
   }
+
+  // addUser() {
+  //   apiServices.addUser(value)
+  //   console.log('user info sent to apiServices ===>', value)
+  // }
 
   render() {
     return (
