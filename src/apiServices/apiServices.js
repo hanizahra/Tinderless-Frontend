@@ -20,6 +20,23 @@ apiServices.addUser = (user) => {
   console.log('apiServices has received this data -->', user)
 }
 
+apiServices.getOneUser = (id) => {
+  return axios.get(`http://localhost:3000/api/DatingApp/${id}`)
+}
+
+apiServices.updateUser = (user, id) => {
+  return axios({
+    method:'PATCH',
+    url: `http://localhost:3000/api/DatingApp/${id}`,
+    data:
+    {
+      id: user.userId,
+      user: user.user,
+    }
+  })
+  console.log('patch is running and user and id are', user)
+}
+
 apiServices.addUserPhoto = (photo) => {
  return axios({
     method: 'POST',

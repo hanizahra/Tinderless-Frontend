@@ -22,11 +22,18 @@ export default class PhotoUpload extends React.Component {
   }
 
   componentDidMount() {
-    console.log('loaded', this.state, ImagePicker.showImagePicker)
-    const { navigate } = this.props.navigation
+    // setInterval(() => {
+      console.log('loaded', this.state, ImagePicker.showImagePicker)
+      if (this.state.avatarSource !== null) {
+      return this.nextPage()
+      } else {
+        console.log('this is this.state.avatarSource -->', this.state.avatarSource)
+      }
+    // }, 1000)
   }
 
   selectPhotoTapped() {
+
     ImagePicker.openPicker({
       width: 300,
       height: 400,
@@ -34,7 +41,15 @@ export default class PhotoUpload extends React.Component {
     }).then(image => {
       apiServices.addUserPhoto(image.path)
       console.log('this is the image --> ', image.path);
+    }).catch(err => {
+      console.log('this is err', err)
     })
+
+  }
+
+  nextPage = () => {
+    const { navigate } = this.props.navigation
+    navigate('SwipeScreen')
   }
 
   render() {

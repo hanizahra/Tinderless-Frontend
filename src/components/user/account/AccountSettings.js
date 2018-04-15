@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Button, TouchableHighlight, Text, TouchableOpacity } from 'react-native';
 import PhotoUpdate from './PhotoUpdate';
+import apiServices from '../../../apiServices/apiServices';
 
 import t from 'tcomb-form-native'; // 0.6.9
 
@@ -10,7 +11,7 @@ const GenderSeeking = t.enums({
   M: 'Male',
   F: 'Female',
   T: 'Trans',
-  E: 'Everyone!'
+  E: 'Everyone!',
 });
 
 const AgeSeeking = t.enums({
@@ -22,33 +23,50 @@ const AgeSeeking = t.enums({
 });
 
 const Person = t.struct({
-  "I'm seeking": GenderSeeking,
-  "Between": AgeSeeking
+  "gender_seeking": GenderSeeking,
+  "age_seeking": AgeSeeking
 });
 
-// const options = {
-//     fields: {
-//     "I identify as": {
-//       error: 'Required'
-//     },
-//     age: {
-//       error: 'Required'
-//     },
-//     "I'm seeking": {
-//       error: 'Required'
-//     },
-//     "Between": {
-//       error: 'Required'
-//     }
-//   },
-// };
+const options = {
+    fields: {
+    "gender_seeking": {
+      label: "I'm seeking",
+      error: 'Required'
+    },
+    "age_seeking": {
+      label: "Between",
+      error: 'Required'
+    }
+  },
+};
 
 export default class AccountSettings extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      apiDataLoaded: false,
+      apiData: '',
+    }
+  }
 
+  componentDidMount() {
+    // console.log('component did mount user --->', this.props.match.params.id)
+    apiServices.getOneUser(1)
+    .then(user => {
+      console.log('getOneUser is here--->',user)
+      this.setState({
+        apiDataLoaded: true,
+        apiData: user.data.dataShowOne.user
+      })
+      console.log('this is what we will use--> ', this.state.apiData)
+    })
+  }
 
   handleSubmit = () => {
     const value = this._form.getValue(); // use that ref to get the form value
-    console.log('value: ', value);
+    console.log('new value for updated account: ', value);
+    console.log('this is this.state-->', this.state.apiData)
+    apiServices.updateUser(value, this.state.apiData.id)
     const { navigate } = this.props.navigation
     navigate('SwipeScreen')
   }
@@ -63,12 +81,12 @@ export default class AccountSettings extends Component {
       // },
   };
 
-  signupPage = () => {
-    const value = this._form.getValue(); // use that ref to get the form value
-    console.log('value: ', value);
-    const { navigate } = this.props.navigation
-    navigate('RegisterScreen')
-  }
+  // signupPage = () => {
+  //   const value = this._form.getValue(); // use that ref to get the form value
+  //   console.log('value: ', value);
+  //   const { navigate } = this.props.navigation
+  //   navigate('RegisterScreen')
+  // }
 
   render() {
     return (
@@ -76,10 +94,14 @@ export default class AccountSettings extends Component {
         <View style={styles.photoUpdate}>
           <PhotoUpdate />
         </View>
+        <Text>
+          { this.state.apiData.username }
+        </Text>
         <Form
           ref={c => this._form = c}
           type={Person}
-          // options={options}
+          options={options}
+          value={this.state.apiData}
         />
         <TouchableHighlight style={styles.button} onPress={this.handleSubmit} underlayColor='#99d9f4'>
           <Text style={styles.buttonText}>Save</Text>
