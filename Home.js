@@ -22,6 +22,7 @@ import {
 } from 'react-native';
 
 const Home = StackNavigator ({
+  AppScreen : {screen: App},
   AccountScreen: {screen: AccountSettings},
   PhotoUploadScreen: {screen: PhotoUpload},
   RegisterScreen : {screen: RegisterForm},

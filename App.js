@@ -14,9 +14,10 @@ import {
   Button,
   NavigatorIOS
 } from 'react-native';
-import NavigatorIOSApp from './src/components/navigator/NavigatorIOSApp'
-import LoginForm from './src/components/user/account/LoginForm'
-import SignupForm from './src/components/user/account/SignupForm'
+import NavigatorIOSApp from './src/components/navigator/NavigatorIOSApp';
+import LoginForm from './src/components/user/account/LoginForm';
+import SignupForm from './src/components/user/account/SignupForm';
+import apiServices from './src/apiServices/apiServices';
 
 type Props = {};
 
@@ -83,13 +84,16 @@ export default class Home extends Component<Props> {
       fetch(url)
         .then((response) => response.json())
         .then((jsonResponse) => {
-          console.log(jsonResponse);
-          //this.name =  jsonResponse["result"]["name"];
-          //this.open =  jsonResponse["result"]["opening_hours"]["open_now"];
-          //this.id =  jsonResponse["result"]["id"];
-          console.log('getting user place details');
+          // console.log('these are location name details --> ', jsonResponse["result"]["name"]);
+          //console.log('these are location formatted_address details --> ', jsonResponse["result"]["formatted_address"]);
+          //console.log('these are location place_id details --> ', jsonResponse["result"]["place_id"]);
+          //console.log('these are location url details --> ', jsonResponse["result"]["url"]);
+          apiServices.addLocation(jsonResponse["result"])
+          console.log('this is the new object ----> ', jsonResponse["result"])
           resolve();
-        })
+        }).catch((err) => {
+            console.log('error -->', err)
+          })
       });
   }
 
@@ -119,6 +123,7 @@ export default class Home extends Component<Props> {
   render() {
     let locationData = 'Loading...';
     if(this.state.hasInfo) {
+      console.log('this is latitude', this.name)
       locationData = (
         <Text>
          {this.latitude}
