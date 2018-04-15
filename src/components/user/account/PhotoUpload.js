@@ -1,5 +1,7 @@
 import React from 'react';
 import ImagePicker  from 'react-native-image-crop-picker';
+import apiServices from '../../../apiServices/apiServices';
+import Home from '../../../../App';
 import {
   StyleSheet,
   Text,
@@ -21,6 +23,7 @@ export default class PhotoUpload extends React.Component {
 
   componentDidMount() {
     console.log('loaded', this.state, ImagePicker.showImagePicker)
+    const { navigate } = this.props.navigation
   }
 
   selectPhotoTapped() {
@@ -29,10 +32,10 @@ export default class PhotoUpload extends React.Component {
       height: 400,
       cropping: true
     }).then(image => {
-      console.log(image);
-    });
+      apiServices.addUserPhoto(image.path)
+      console.log('this is the image --> ', image.path);
+    })
   }
-
 
   render() {
     return (

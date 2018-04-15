@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Button, TouchableHighlight, Text } from 'react-native';
+import apiServices from '../../../apiServices/apiServices';
 import Home from '../../../../App';
 
 import t from 'tcomb-form-native'; // 0.6.9
@@ -28,24 +29,27 @@ const AgeSeeking = t.enums({
 });
 
 const Person = t.struct({
-  "I identify as": Gender,
+  "gender": Gender,
   age: t.Number,
-  "I'm seeking": GenderSeeking,
-  "Between": AgeSeeking
+  "gender_seeking": GenderSeeking,
+  "age_seeking": AgeSeeking
 });
 
 const options = {
-    fields: {
-    "I identify as": {
+  fields: {
+    "gender": {
+      label: "I identify as",
       error: 'Required'
     },
     age: {
       error: 'Required'
     },
-    "I'm seeking": {
+    "gender_seeking": {
+      label: "I'm seeking",
       error: 'Required'
     },
-    "Between": {
+    "age_seeking": {
+      label: "Between",
       error: 'Required'
     }
   },
@@ -58,7 +62,9 @@ export default class ProfileForm extends Component {
     const value = this._form.getValue(); // use that ref to get the form value
     console.log('value: ', value);
     const { navigate } = this.props.navigation
-   navigate('ProfileScreen')
+    navigate('PhotoUploadScreen',  Object.assign({}, this.props.navigation.state.params, value))
+    apiServices.addUser( Object.assign({}, this.props.navigation.state.params, value));
+    console.log('the data: ', Object.assign({}, this.props.navigation.state.params, value));
   }
 
   render() {
@@ -67,7 +73,7 @@ export default class ProfileForm extends Component {
         <Form
           ref={c => this._form = c}
           type={Person}
-          // options={options}
+          options={options}
         />
         <TouchableHighlight style={styles.button} onPress={this.handleSubmit} underlayColor='#99d9f4'>
           <Text style={styles.buttonText}>Done!</Text>

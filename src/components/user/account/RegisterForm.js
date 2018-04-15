@@ -13,6 +13,18 @@ const User = t.struct({
   terms: t.Boolean
 });
 
+/*
+username: "",
+password: "",
+gender: "".
+email: "".
+
+method: "PATCH"
+
+
+*/
+
+
 const options = {
     fields: {
     email: {
@@ -21,6 +33,7 @@ const options = {
     password: {
       error: 'Required'
     },
+
     terms: {
       label: 'Agree to Terms',
     },
@@ -34,9 +47,9 @@ export default class RegisterForm extends Component {
     const value = this._form.getValue(); // use that ref to get the form value
     // console.log('value: ', value);
     const { navigate } = this.props.navigation
-    navigate('ProfileScreen')
-    apiServices.addUser(value)
-    console.log('user info sent to apiServices ===>', value)
+    navigate('ProfileScreen', value);
+    //apiServices.addUser(value)
+    //console.log('user info sent to apiServices ===>', value)
   }
 
   // addUser() {

@@ -112,7 +112,7 @@ export default class Home extends Component<Props> {
     // },5000);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.runPositionPoll();
   }
 
