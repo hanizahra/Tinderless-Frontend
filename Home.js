@@ -22,13 +22,17 @@ import {
 } from 'react-native';
 
 const Home = StackNavigator ({
+  LogInScreen : {screen: LoginForm},
+  RegisterScreen : {screen: RegisterForm},
+  AccountScreen: {screen: AccountSettings},
+  PhotoUploadScreen: {screen: PhotoUpload},
+  AccountScreen: {screen: AccountSettings},
   AppScreen : {screen: App},
   AccountScreen: {screen: AccountSettings},
   PhotoUploadScreen: {screen: PhotoUpload},
   RegisterScreen : {screen: RegisterForm},
   PhotoUploadScreen: {screen: PhotoUpload},
   AppScreen : {screen: App},
-  AccountScreen: {screen: AccountSettings},
   MatchedScreen: {screen: Matches},
   SwipeScreen: {screen: SwipeMatch},
   ModalScreen: {screen: ModalMatch},

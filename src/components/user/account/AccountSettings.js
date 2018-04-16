@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Button, TouchableHighlight, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Button, TouchableHighlight, Text, TouchableOpacity, AsyncStorage } from 'react-native';
 import PhotoUpdate from './PhotoUpdate';
 import apiServices from '../../../apiServices/apiServices';
 
@@ -46,19 +46,45 @@ export default class AccountSettings extends Component {
     this.state = {
       apiDataLoaded: false,
       apiData: '',
+      apiPhotoDataLoaded: false,
+      apiPhotoData: '',
+      user: null,
     }
   }
 
   componentDidMount() {
-    // console.log('component did mount user --->', this.props.match.params.id)
-    apiServices.getOneUser(1)
-    .then(user => {
-      console.log('getOneUser is here--->',user)
-      this.setState({
-        apiDataLoaded: true,
-        apiData: user.data.dataShowOne.user
-      })
-      console.log('this is what we will use--> ', this.state.apiData)
+
+    AsyncStorage.getItem('auth').then((token) =>
+    {
+      console.log('authToken is: ', token);
+      let authToken = (JSON.parse(token));
+      let userId = authToken.authToken;
+      console.log('the user id is : ', userId);
+      apiServices.getOneUser(userId).then(user =>
+      {
+        console.log('getOneUser is here--->',user)
+        this.setState({
+          apiDataLoaded: true,
+          apiData: user.data.dataShowOne.user
+        })
+        console.log('this is our user data--> ', this.state.apiData)
+      }).catch((err) => {
+        console.log('an error occured fetching a user with id: ', userId);
+        console.log('error: ', err);
+      });
+
+      apiServices.getOnePhoto(userId).then(photo =>
+      {
+        console.log('getOnePhoto is here--->',photo)
+        this.setState({
+          apiPhotoDataLoaded: true,
+          apiPhotoData: photo.data.dataShowOne.photo
+        })
+        console.log('this is our photo data--> ', this.state.apiPhotoData)
+      }).catch((err) =>
+      {
+        console.log('error getting photo with userId', userId, ' and error: ', err);
+      });
     })
   }
 
@@ -81,16 +107,12 @@ export default class AccountSettings extends Component {
       // },
   };
 
-  // signupPage = () => {
-  //   const value = this._form.getValue(); // use that ref to get the form value
-  //   console.log('value: ', value);
-  //   const { navigate } = this.props.navigation
-  //   navigate('RegisterScreen')
-  // }
-
   render() {
-    return (
-      <View style={styles.container}>
+
+    let test1 = (<View><Text>Loading...</Text></View>);
+    if(this.state.apiDataLoaded && this.state.apiPhotoDataLoaded)
+    {
+       test1 = (<View style={styles.container}>
         <View style={styles.photoUpdate}>
           <PhotoUpdate />
         </View>
@@ -112,6 +134,11 @@ export default class AccountSettings extends Component {
         <TouchableHighlight style={styles.DeleteButton} onPress={this.handleSubmit} underlayColor='#99d9f4'>
           <Text style={styles.buttonText}>Delete Account</Text>
         </TouchableHighlight>
+      </View>);
+    }
+    return (
+      <View>
+      {test1}
       </View>
     );
   }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Button, TouchableHighlight, Text } from 'react-native';
+import { View, StyleSheet, Button, TouchableHighlight, Text, AsyncStorage} from 'react-native';
 import Home from '../../../../App';
+import apiServices from '../../../apiServices/apiServices';
 
 import t from 'tcomb-form-native'; // 0.6.9
 
@@ -29,7 +30,16 @@ export default class LoginForm extends Component {
     const value = this._form.getValue(); // use that ref to get the form value
     console.log('value: ', value);
     const { navigate } = this.props.navigation
-    navigate('SwipeScreen')
+    apiServices.loginUser(value.username, value.password).then((response) =>
+    {
+      let auth = 'auth';
+      AsyncStorage.setItem(auth, JSON.stringify({authToken: response.data.user.id}));
+      //console.log('login response: ', response);
+      navigate('SwipeScreen');
+    }).catch((err) => {
+      console.log('login error: ', err);
+    })
+
   }
 
   signupPage = () => {

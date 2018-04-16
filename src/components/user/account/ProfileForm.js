@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Button, TouchableHighlight, Text } from 'react-native';
+import { View, StyleSheet, Button, TouchableHighlight, Text, AsyncStorage } from 'react-native';
 import apiServices from '../../../apiServices/apiServices';
 import Home from '../../../../App';
 
@@ -62,8 +62,15 @@ export default class ProfileForm extends Component {
     const value = this._form.getValue(); // use that ref to get the form value
     console.log('value: ', value);
     const { navigate } = this.props.navigation
-    navigate('PhotoUploadScreen',  Object.assign({}, this.props.navigation.state.params, value))
-    apiServices.addUser( Object.assign({}, this.props.navigation.state.params, value));
+
+    apiServices.addUser( Object.assign({}, this.props.navigation.state.params, value))
+    .then((res) =>
+    {
+      console.log('response from server: ', res);
+      let auth = 'auth';
+      AsyncStorage.setItem(auth, JSON.stringify({authToken: res.data.userData.id}));
+      navigate('PhotoUploadScreen',  Object.assign({}, this.props.navigation.state.params, value))
+    });
     console.log('the data: ', Object.assign({}, this.props.navigation.state.params, value));
   }
 

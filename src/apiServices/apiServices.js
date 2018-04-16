@@ -16,8 +16,8 @@ apiServices.addUser = (user) => {
       age_seeking: user.age_seeking,
       profile_id: user.profile_id
     }
-  })
-  console.log('apiServices has received this data -->', user)
+  });
+
 }
 
 apiServices.addLocation = (location) => {
@@ -44,22 +44,38 @@ apiServices.updateUser = (user, id) => {
     url: `http://localhost:3000/api/DatingApp/${id}`,
     data:
     {
-      id: user.userId,
-      user: user.user
+      user: user.age_seeking,
+      id: user.gender_seeking,
     }
   })
   console.log('patch is running and user and id are', user)
 }
 
-apiServices.addUserPhoto = (photo) => {
+apiServices.addUserPhoto = (userId, photo) => {
  return axios({
     method: 'POST',
     url: 'http://localhost:3000/api/DatingApp/addphoto',
     data: {
+      user_id: userId,
       photo: photo
     }
   })
   console.log('apiServices has received this data -->', photo)
+}
+
+apiServices.getOnePhoto = (id) => {
+  return axios.get(`http://localhost:3000/api/DatingApp/addphoto/${id}`)
+}
+
+apiServices.loginUser = (user, password) => {
+  return axios({
+    method: 'POST',
+    url: `http://localhost:3000/api/DatingApp/login`,
+    data: {
+      username: user,
+      password: password
+    }
+  })//.then((response) =>{console.log('apiServices.loginUser response: ', response)});
 }
 
 export default apiServices;

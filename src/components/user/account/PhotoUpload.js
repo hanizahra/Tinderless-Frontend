@@ -9,6 +9,7 @@ import {
   PixelRatio,
   TouchableOpacity,
   Image,
+  AsyncStorage
 } from 'react-native';
 
 
@@ -32,18 +33,29 @@ export default class PhotoUpload extends React.Component {
     // }, 1000)
   }
 
-  selectPhotoTapped() {
+  selectPhotoTapped = () => {
 
-    ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true
-    }).then(image => {
-      apiServices.addUserPhoto(image.path)
-      console.log('this is the image --> ', image.path);
-    }).catch(err => {
-      console.log('this is err', err)
-    })
+    AsyncStorage.getItem('auth').then((token) =>
+    {
+      let authToken = (JSON.parse(token));
+      let userId = authToken.authToken;
+
+      console.log('In PhotoUpload the userId is: ', userId);
+      console.log('props:', this.props.navigation);
+      ImagePicker.openPicker({
+        width: 300,
+        height: 400,
+        cropping: true
+      }).then(image => {
+        apiServices.addUserPhoto(userId, image.path)
+        AsyncStorage.getItem('auth').then(token => {console.log('auth token is', JSON.parse(token));});
+        console.log('this is the image --> ', image.path);
+        console.log('this is all the image data-->', image)
+        this.nextPage();
+      }).catch(err => {
+        console.log('this is err', err)
+      })
+    });
 
   }
 

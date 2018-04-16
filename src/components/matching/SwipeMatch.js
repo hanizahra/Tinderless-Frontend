@@ -9,7 +9,8 @@ Image,
 Button,
 TouchableHighlight,
 TouchableOpacity,
-Navigator
+Navigator,
+AsyncStorage
 } from 'react-native';
 import t from 'tcomb-form-native'; // 0.6.9
 import SwipeCards from 'react-native-swipe-cards';
@@ -20,6 +21,8 @@ class Card extends React.Component {
   constructor(props) {
     super(props);
   }
+
+
 
   render() {
     return (
@@ -79,6 +82,19 @@ export default class SwipeMatch extends React.Component {
     })
   }
 
+  componentWillMount()
+  {
+    console.log('Swipescreen componentWillMount');
+    try
+    {
+      AsyncStorage.getItem('auth').then(token => {console.log('auth token is', JSON.parse(token));});
+
+    }
+    catch(error)
+    {
+      console.log(error);
+    }
+  }
   static navigationOptions = ({ navigation }) => ({
     headerRight: <Button onPress={() => navigation.state.params.handleRender()} title='Matches'/>,
     headerLeft: <Button onPress={() => navigation.state.params.handleRender2()} title='Account' />
