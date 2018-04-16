@@ -12,7 +12,8 @@ import {
   Text,
   View,
   Button,
-  NavigatorIOS
+  NavigatorIOS,
+  AsyncStorage
 } from 'react-native';
 import NavigatorIOSApp from './src/components/navigator/NavigatorIOSApp';
 import LoginForm from './src/components/user/account/LoginForm';
@@ -88,6 +89,7 @@ export default class Home extends Component<Props> {
           //console.log('these are location formatted_address details --> ', jsonResponse["result"]["formatted_address"]);
           //console.log('these are location place_id details --> ', jsonResponse["result"]["place_id"]);
           //console.log('these are location url details --> ', jsonResponse["result"]["url"]);
+
           apiServices.addLocation(jsonResponse["result"])
           console.log('this is the new object ----> ', jsonResponse["result"])
           resolve();

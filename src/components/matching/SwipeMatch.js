@@ -16,6 +16,7 @@ import t from 'tcomb-form-native'; // 0.6.9
 import SwipeCards from 'react-native-swipe-cards';
 import Modal from 'react-native-modal';
 import ModalMatch from './ModalMatch';
+import apiServices from '../../apiServices/apiServices';
 
 class Card extends React.Component {
   constructor(props) {
@@ -48,47 +49,183 @@ class NoMoreCards extends Component {
   }
 }
 
-const cards = [
-  {name: '1', image: 'https://media.giphy.com/media/GfXFVHUzjlbOg/giphy.gif'},
-  {name: '2', image: 'https://media.giphy.com/media/irTuv1L1T34TC/giphy.gif'},
-  {name: '3', image: 'https://media.giphy.com/media/LkLL0HJerdXMI/giphy.gif'},
-  {name: '4', image: 'https://media.giphy.com/media/fFBmUMzFL5zRS/giphy.gif'},
-  {name: '5', image: 'https://media.giphy.com/media/oDLDbBgf0dkis/giphy.gif'},
-  {name: '6', image: 'https://media.giphy.com/media/7r4g8V2UkBUcw/giphy.gif'},
-  {name: '7', image: 'https://media.giphy.com/media/K6Q7ZCdLy8pCE/giphy.gif'},
-  {name: '8', image: 'https://media.giphy.com/media/hEwST9KM0UGti/giphy.gif'},
-  {name: '9', image: 'https://media.giphy.com/media/3oEduJbDtIuA2VrtS0/giphy.gif'},
-]
+// const cards = [
+//   {name: '1', image: 'https://media.giphy.com/media/GfXFVHUzjlbOg/giphy.gif'},
+//   {name: '2', image: 'https://media.giphy.com/media/irTuv1L1T34TC/giphy.gif'},
+//   {name: '3', image: 'https://media.giphy.com/media/LkLL0HJerdXMI/giphy.gif'},
+//   {name: '4', image: 'https://media.giphy.com/media/fFBmUMzFL5zRS/giphy.gif'},
+//   {name: '5', image: 'https://media.giphy.com/media/oDLDbBgf0dkis/giphy.gif'},
+//   {name: '6', image: 'https://media.giphy.com/media/7r4g8V2UkBUcw/giphy.gif'},
+//   {name: '7', image: 'https://media.giphy.com/media/K6Q7ZCdLy8pCE/giphy.gif'},
+//   {name: '8', image: 'https://media.giphy.com/media/hEwST9KM0UGti/giphy.gif'},
+//   {name: '9', image: 'https://media.giphy.com/media/3oEduJbDtIuA2VrtS0/giphy.gif'},
+// ]
 
-const cards2 = [
-  {name: '10', image: 'https://media.giphy.com/media/12b3E4U9aSndxC/giphy.gif'},
-  {name: '11', image: 'https://media4.giphy.com/media/6csVEPEmHWhWg/200.gif'},
-  {name: '12', image: 'https://media4.giphy.com/media/AA69fOAMCPa4o/200.gif'},
-  {name: '13', image: 'https://media.giphy.com/media/OVHFny0I7njuU/giphy.gif'},
-]
+// const cards2 = [
+//   {name: '10', image: 'https://media.giphy.com/media/12b3E4U9aSndxC/giphy.gif'},
+//   {name: '11', image: 'https://media4.giphy.com/media/6csVEPEmHWhWg/200.gif'},
+//   {name: '12', image: 'https://media4.giphy.com/media/AA69fOAMCPa4o/200.gif'},
+//   {name: '13', image: 'https://media.giphy.com/media/OVHFny0I7njuU/giphy.gif'},
+// ]
 
 export default class SwipeMatch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cards: cards,
-      oufOfCards: false
+      cards: [],
+      oufOfCards: false,
+      hasInfo: false
     };
     this.renderMatchScreen = this.renderMatchScreen.bind(this)
     this.renderSettingsScreen = this.renderSettingsScreen.bind(this)
     this.props.navigation.setParams({
       handleRender: this.renderMatchScreen,
-      handleRender2: this.renderSettingsScreen
+      handleRender2: this.renderSettingsScreen,
+    })
+    this.latitude = null;
+    this.longitude =  null;
+    this.place_id =  null;
+    this.streetAddress =  null;
+    this.name =  null;
+    this.open =  null;
+    this.id =  null;
+    this.error = null;
+  }
+
+
+
+
+
+
+  getPosition = () => {
+    return new Promise((resolve,reject) => {
+      navigator.geolocation.getCurrentPosition((position) => {
+
+        this.latitude =  position.coords.latitude;
+        this.longitude =  position.coords.longitude;
+        this.error =  null;
+        console.log('getting user position', this.latitude, this.longitude);
+        resolve();
+      },
+      (error) => {
+        //this.setState({ error: error.message }); reject()
+      },
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  });
+  };
+
+  geocodeLocation  = () => {
+    return new Promise((resolve, reject) => {
+
+     fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng='+this.latitude+','+this.longitude+'&key=AIzaSyC8ghKwfyUigqf7l0z06zJXOCHsXBKUgyw')
+      .then((response) => response.json())
+      .then((jsonResponse) => {
+        console.log('this is the place id => ' + JSON.stringify(jsonResponse["results"][0]["place_id"]))
+        // this.setState({
+          this.place_id =  jsonResponse["results"][0]["place_id"];
+          this.streetAddress =  jsonResponse["results"][0]["formatted_address"];
+        // });
+        console.log('geocoding user location')
+        console.log('street address here', this.streetAddress);
+        resolve();
+    });
+
+    });
+
+  }
+
+  getLocationDetails = (userId) => {
+    console.log('getLocationDetails', this.latitude, this.longitude, this.place_id);
+    let url = 'https://maps.googleapis.com/maps/api/place/details/json?location='+this.latitude+','+this.longitude+'&placeid='+this.place_id+'&key=AIzaSyC8ghKwfyUigqf7l0z06zJXOCHsXBKUgyw';
+    console.log('url', url);
+    return new Promise((resolve, reject) => {
+      fetch(url)
+        .then((response) => response.json())
+        .then((jsonResponse) => {
+
+          let location = {
+            location_name: jsonResponse.result.name,
+            formatted_address: jsonResponse.result.formatted_address,
+            place_id: jsonResponse.result.place_id,
+            location_url: jsonResponse.result.url
+          }
+          apiServices.updateLocation(userId, location).then((data) => {
+            console.log('result of updateLocation:', data);
+            resolve();
+          });
+
+        }).catch((err) => {
+            console.log('error -->', err)
+          })
     })
   }
 
-  componentWillMount()
+  getNearbyPeople = (userId) =>
+  {
+    return new Promise(function(resolve, reject)
+    {
+      apiServices.getNearbyPeople(userId).then((data) =>
+        {
+          console.log('getNearbyPeople data: ', data);
+          resolve(data);
+        });
+    })
+  }
+
+  getUserPosition = (userId) => {
+    navigator.geolocation.watchPosition(() => {
+    // setInterval(() =>
+    // {
+        this.getPosition()
+        .then((result) => {
+          return this.geocodeLocation();
+        })
+        .then((result) => {
+          return this.getLocationDetails(userId);
+        })
+        .then((result) => {
+          return this.getNearbyPeople(userId)
+
+          //console.log('current location: ', this.latitude, this.longitude);
+        })
+        .then((result) =>
+        {
+          console.log('result:', result);
+          let cards = [];
+          for(let idx in result.data.nearbyPeople)
+          {
+            let person = result.data.nearbyPeople[idx];
+
+            cards.push({name: person.email, image: 'https://media.giphy.com/media/GfXFVHUzjlbOg/giphy.gif'});
+          }
+          // result.data.nearbyPeople.map((person) =>
+          // {
+          //   return [name: person.email, image: 'https://media.giphy.com/media/GfXFVHUzjlbOg/giphy.gif'];
+          // })
+          // console.log('cards', cards);
+          this.setState({hasInfo:true, cards: cards, outOfCards: false});
+        });
+      });
+    // },5000);
+  }
+
+
+
+
+
+
+  componentDidMount()
   {
     console.log('Swipescreen componentWillMount');
     try
     {
-      AsyncStorage.getItem('auth').then(token => {console.log('auth token is', JSON.parse(token));});
-
+      AsyncStorage.getItem('auth').then(token => {
+        console.log('auth token is', JSON.parse(token));
+        let authToken = JSON.parse(token);
+        let userId = authToken.authToken
+        this.getUserPosition(userId);
+      });
     }
     catch(error)
     {
@@ -135,10 +272,10 @@ export default class SwipeMatch extends React.Component {
       console.log(`There are only ${this.state.cards.length - index - 1} cards left.`);
 
       if (!this.state.outOfCards) {
-        console.log(`Adding ${cards2.length} more cards`)
+        //console.log(`Adding ${cards2.length} more cards`)
 
         this.setState({
-          cards: this.state.cards.concat(cards2),
+          //cards: this.state.cards.concat(cards2),
           outOfCards: true
         })
       }
@@ -150,8 +287,13 @@ export default class SwipeMatch extends React.Component {
   render() {
     // If you want a stack of cards instead of one-per-one view, activate stack mode
     // stack={true}
+    // let test = (<View><Text>Loading Nearby People...</Text></View>);
+    // if(this.state.hasInfo)
+    // {
+    //   test = ( );
+    // }
     return (
-      <View style={{
+     <View style={{
                   flex: 1,
                   flexDirection: 'column',
                   justifyContent: 'center',

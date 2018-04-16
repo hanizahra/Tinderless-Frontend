@@ -24,6 +24,8 @@ import {
 const Home = StackNavigator ({
   LogInScreen : {screen: LoginForm},
   RegisterScreen : {screen: RegisterForm},
+  LogInScreen : {screen: LoginForm},
+  RegisterScreen : {screen: RegisterForm},
   AccountScreen: {screen: AccountSettings},
   PhotoUploadScreen: {screen: PhotoUpload},
   AccountScreen: {screen: AccountSettings},

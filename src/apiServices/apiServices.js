@@ -78,4 +78,26 @@ apiServices.loginUser = (user, password) => {
   })//.then((response) =>{console.log('apiServices.loginUser response: ', response)});
 }
 
+apiServices.updateLocation = (userId, location) => {
+  console.log('from apiServices.updateLocation: ', userId, location);
+  let postData = Object.assign({}, {userId: userId}, location)
+  console.log('postData: ', postData);
+  return axios({
+    method: 'POST',
+    url: `http://localhost:3000/api/DatingApp/updateLocation`,
+    data: postData
+  })
+}
+
+apiServices.getNearbyPeople = (userId) => {
+  console.log('from apiServices.getNearbyPeople userId: ', userId);
+  let postData = {userId: userId};
+  console.log('postData: ', postData);
+  return axios({
+    method: 'POST',
+    url: `http://localhost:3000/api/DatingApp/getNearbyPeople`,
+    data: postData
+  })
+}
+
 export default apiServices;
