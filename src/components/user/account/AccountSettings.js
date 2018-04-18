@@ -113,9 +113,9 @@ export default class AccountSettings extends Component {
     if(this.state.apiDataLoaded && this.state.apiPhotoDataLoaded)
     {
        test1 = (<View style={styles.container}>
-        <View style={styles.photoUpdate}>
-          <PhotoUpdate />
-        </View>
+        // <View style={styles.photoUpdate}>
+        //   <PhotoUpdate />
+        // </View>
         <Text>
           { this.state.apiData.username }
         </Text>

@@ -78,8 +78,20 @@ apiServices.loginUser = (user, password) => {
   })//.then((response) =>{console.log('apiServices.loginUser response: ', response)});
 }
 
+apiServices.addLike = (data) => {
+  console.log(data)
+  return axios({
+    method: 'POST',
+    url: 'http://localhost:3000/api/DatingApp/likes',
+    data: {
+      swiper_user_id: data.swiper_user_id,
+      person_they_swiped_yes_on_user_id: data.person_they_swiped_yes_on_user_id
+    }
+  })
+}
+
 apiServices.updateLocation = (userId, location) => {
-  console.log('from apiServices.updateLocation: ', userId, location);
+  // console.log('from apiServices.updateLocation: ', userId, location);
   let postData = Object.assign({}, {userId: userId}, location)
   console.log('postData: ', postData);
   return axios({
@@ -90,13 +102,24 @@ apiServices.updateLocation = (userId, location) => {
 }
 
 apiServices.getNearbyPeople = (userId) => {
-  console.log('from apiServices.getNearbyPeople userId: ', userId);
+  // console.log('from apiServices.getNearbyPeople userId: ', userId);
   let postData = {userId: userId};
   console.log('postData: ', postData);
   return axios({
     method: 'POST',
     url: `http://localhost:3000/api/DatingApp/getNearbyPeople`,
     data: postData
+  })
+}
+
+apiServices.checkForMatch = (data) => {
+  return axios.request({
+    url: 'http://localhost:3000/api/DatingApp/checkForMatch',
+    method: "POST",
+    data: {
+      person_they_swiped_yes_on_user_id: data.person_they_swiped_yes_on_user_id,
+      swiper_user_id: data.swiper_user_id
+    }
   })
 }
 

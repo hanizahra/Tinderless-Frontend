@@ -10,7 +10,8 @@ Button,
 TouchableHighlight,
 TouchableOpacity,
 Navigator,
-AsyncStorage
+AsyncStorage,
+Alert
 } from 'react-native';
 import t from 'tcomb-form-native'; // 0.6.9
 import SwipeCards from 'react-native-swipe-cards';
@@ -23,7 +24,9 @@ class Card extends React.Component {
     super(props);
   }
 
-
+componentDidMount(){
+  console.log(`I AM THE SINGLE CARD`, this.props)
+}
 
   render() {
     return (
@@ -74,10 +77,14 @@ export default class SwipeMatch extends React.Component {
     this.state = {
       cards: [],
       oufOfCards: false,
-      hasInfo: false
+      hasInfo: false,
+      currentUserId: null,
+      message: ""
     };
     this.renderMatchScreen = this.renderMatchScreen.bind(this)
     this.renderSettingsScreen = this.renderSettingsScreen.bind(this)
+    this.handleMatch = this.handleMatch.bind(this)
+    this.handleYup = this.handleYup.bind(this)
     this.props.navigation.setParams({
       handleRender: this.renderMatchScreen,
       handleRender2: this.renderSettingsScreen,
@@ -185,6 +192,7 @@ export default class SwipeMatch extends React.Component {
           return this.getLocationDetails(userId);
         })
         .then((result) => {
+          console.log("userid ------", userId)
           return this.getNearbyPeople(userId)
 
           //console.log('current location: ', this.latitude, this.longitude);
@@ -197,14 +205,16 @@ export default class SwipeMatch extends React.Component {
           {
             let person = result.data.nearbyPeople[idx];
 
-            cards.push({name: person.email, image: 'https://media.giphy.com/media/GfXFVHUzjlbOg/giphy.gif'});
+            cards.push({id: person.id, name: person.username, image: person.photo});
+            console.log(`-------->`, cards)
           }
+
           // result.data.nearbyPeople.map((person) =>
           // {
           //   return [name: person.email, image: 'https://media.giphy.com/media/GfXFVHUzjlbOg/giphy.gif'];
           // })
           // console.log('cards', cards);
-          this.setState({hasInfo:true, cards: cards, outOfCards: false});
+          this.setState({hasInfo:true, cards: cards, outOfCards: false, currentUserId: userId}, () => console.log(`I AM THE NEW USER POSITION`, this.state));
         });
       });
     // },5000);
@@ -217,7 +227,7 @@ export default class SwipeMatch extends React.Component {
 
   componentDidMount()
   {
-    console.log('Swipescreen componentWillMount');
+    console.log(`I just mounted!`, this.props, this.state);
     try
     {
       AsyncStorage.getItem('auth').then(token => {
@@ -257,8 +267,55 @@ export default class SwipeMatch extends React.Component {
   }
 
   handleYup (card) {
-    console.log(`Yup for ${card.text}`)
+    console.log(`Yup for ${card}`, card, this.state.currentUserId)
+    let likeData = {
+      person_they_swiped_yes_on_user_id: card.id,
+      swiper_user_id: this.state.currentUserId
+    }
+    apiServices.addLike(likeData)
+    .then(likeData => {
+      console.log(`I am the like data`, likeData)
+     let check = {
+      person_they_swiped_yes_on_user_id: likeData.data.userData.swiper_user_id,
+      swiper_user_id: likeData.data.userData.person_they_swiped_yes_on_user_id
+     }
+     this.checkForMatch(check)
+    })
+    .catch((err) => {
+      console.log('this is error', err)
+    })
   }
+
+  checkForMatch(data){
+    console.log(`About to check the match table`, data)
+    apiServices.checkForMatch(data)
+    .then(result => {
+      console.log(`I am the front end result!`, result)
+      this.setState({
+        message: result.data.message,
+        matchedUserId: result.data.data.swiper_user_id
+      }, () => this.handleMatch())
+    })
+    .catch(err => {
+      console.log(`Ryan fucked up`, err)
+    })
+  }
+
+  handleMatch(){
+    Alert.alert(this.state.message)
+      // let matchData = {
+      //   user_one: this.state.currentUserId,
+      //   user_two: this.state.matchedUserId
+      // }
+      // apiServices.createMatch(matchData)
+      // .then(result => {
+      //   console.log(`I stored in match table, in front end`, result)
+      // })
+      // .catch(err => {
+      //   console.log(`I am an error for storing matches`, err)
+      // })
+  }
+
   handleNope (card) {
     console.log(`Nope for ${card.text}`)
   }
@@ -300,6 +357,7 @@ export default class SwipeMatch extends React.Component {
                   alignItems: 'center',
                   backgroundColor: 'blue'
                 }}>
+      {this.state.message}
       <SwipeCards
         cards={this.state.cards}
         loop={false}

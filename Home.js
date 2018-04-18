@@ -22,6 +22,7 @@ import {
 } from 'react-native';
 
 const Home = StackNavigator ({
+  // RegisterScreen : {screen: RegisterForm},
   LogInScreen : {screen: LoginForm},
   RegisterScreen : {screen: RegisterForm},
   LogInScreen : {screen: LoginForm},
